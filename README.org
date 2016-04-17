@@ -1,0 +1,14 @@
+* sendto
+send the region content to a function
+
+* Usage
+1. specify ~sendto-function-list~ 
+   
+   The value should be a list of functions which accept a string.
+   
+2. execute ~M-x sendto-mode~
+   
+3. use mouse to drag a region, and then, It will popup a menu
+
+4. select the function you want 
+
