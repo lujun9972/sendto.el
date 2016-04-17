@@ -36,10 +36,18 @@
   "send content of region to functions")
 
 (defcustom sendto-function-list '(sendto-file sendto-buffer sendto-mail)
-  "Functions to be send to")
+  "Functions to be send to"
+  :group 'sendto
+  :type '(repeat function)
+  :set (lambda (item val)
+         (set-default item val)
+         (when (and (symbolp 'sendto-mode)
+                    sendto-mode)
+           (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu val)))))
 
 (defun sendto-popup-functions (&rest functions)
-  (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu functions))
+  (unless (keymapp sendto-menu)
+    (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu functions)))
   (popup-menu sendto-menu))
 
 (defun sendto-popup ()
