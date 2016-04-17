@@ -41,17 +41,19 @@
   :type '(repeat function)
   :set (lambda (item val)
          (set-default item val)
-         (when (and (symbolp 'sendto-mode)
+         (when (and (boundp 'sendto-mode)
                     sendto-mode)
            (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu val)))))
 
 (defun sendto-popup-functions (&rest functions)
-  (unless (keymapp sendto-menu)
+  (unless (and (boundp 'sendto-menu)
+              (keymapp sendto-menu))
     (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu functions)))
   (popup-menu sendto-menu))
 
-(defun sendto-popup ()
-  (interactive)
+(defun sendto-popup (&rest ignore)
+  "pop up a sendto menu"
+  ;; (interactive)
   (apply #'sendto-popup-functions sendto-function-list))
 
 (define-minor-mode sendto-mode "send region content to a function"
@@ -61,9 +63,10 @@
   " Sendto"
   :group 'sendto
   :global t
-  (advice-add 'mouse-set-region :after (lambda (&rest x)
-                                         "sendto"
-                                          (sendto-popup))))
+  (if (and (boundp 'sendto-mode)
+           sendto-mode)
+      (advice-add #'mouse-set-region :after 'sendto-popup)
+    (advice-remove #'mouse-set-region 'sendto-popup)))
 
 
 
