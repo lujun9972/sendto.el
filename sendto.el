@@ -29,8 +29,7 @@
 (defun sendto-mail (content)
   "mail the content"
   (mail)
-  (search-forward "--text follows this line--")
-  (next-line)
+  (goto-char (point-max))
   (insert content))
 
 (defgroup sendto nil
@@ -43,7 +42,7 @@
   (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu functions))
   (popup-menu sendto-menu))
 
-(defun sendto ()
+(defun sendto-popup ()
   (interactive)
   (apply #'sendto-popup-functions sendto-function-list))
 
@@ -56,9 +55,8 @@
   :global t
   (advice-add 'mouse-set-region :after (lambda (&rest x)
                                          "sendto"
-                                          (sendto))))
+                                          (sendto-popup))))
 
 
-;; (help-function-arglist #'incf)
 
 (provide 'sendto)
