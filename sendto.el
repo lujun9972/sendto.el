@@ -32,10 +32,16 @@
   (goto-char (point-max))
   (insert content))
 
+(defun sendto-appt (content)
+  "Add an appointment for today at sometime with message CONTENT"
+  (let ((time (read-string "Time (hh:mm[am/pm]): ")))
+    (appt-add time content)
+    (appt-activate 1)))
+
 (defgroup sendto nil
   "send content of region to functions")
 
-(defcustom sendto-function-list '(sendto-file sendto-buffer sendto-mail)
+(defcustom sendto-function-list '(sendto-file sendto-buffer sendto-mail sendto-appt)
   "Functions to be send to"
   :group 'sendto
   :type '(repeat function)
@@ -53,7 +59,7 @@
 
 (defun sendto-popup (&rest ignore)
   "pop up a sendto menu"
-  ;; (interactive)
+  ;; (interactive) 当用于advise时,似乎不能使用interactive,不知道原因
   (apply #'sendto-popup-functions sendto-function-list))
 
 (define-minor-mode sendto-mode "send region content to a function"
@@ -67,7 +73,6 @@
            sendto-mode)
       (advice-add #'mouse-set-region :after 'sendto-popup)
     (advice-remove #'mouse-set-region 'sendto-popup)))
-
 
 
 (provide 'sendto)
