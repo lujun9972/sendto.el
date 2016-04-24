@@ -107,7 +107,7 @@
   (popup-menu sendto-menu))
 
 ;;;###autoload
-(defun sendto-popup (&rest ignore)
+(defun sendto-popup ()
   "pop up a sendto menu"
   (interactive)
   (apply #'sendto-popup-functions sendto-function-list))
