@@ -57,9 +57,10 @@
     (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu functions)))
   (popup-menu sendto-menu))
 
+;;;###autoload
 (defun sendto-popup (&rest ignore)
   "pop up a sendto menu"
-  ;; (interactive) 当用于advise时,似乎不能使用interactive,不知道原因
+  (interactive)
   (apply #'sendto-popup-functions sendto-function-list))
 
 (define-minor-mode sendto-mode "send region content to a function"
@@ -69,10 +70,11 @@
   " Sendto"
   :group 'sendto
   :global t
-  (if (and (boundp 'sendto-mode)
-           sendto-mode)
-      (advice-add #'mouse-set-region :after 'sendto-popup)
-    (advice-remove #'mouse-set-region 'sendto-popup)))
+  :keymap (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "<mouse-3>") 'sendto-popup)
+            map))
 
 
 (provide 'sendto)
+
+;;; sendto ends here
