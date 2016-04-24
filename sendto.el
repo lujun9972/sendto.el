@@ -1,4 +1,51 @@
-;; -*- lexical-binding: t; -*-
+;;; sendto.el --- send the region content to a function -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2004-2015 Free Software Foundation, Inc.
+
+;; Author: DarkSun <lujun9972@gmail.com>
+;; Created: 2016-4-22
+;; Version: 0.1
+;; Keywords: convenience, region
+;; Package-Requires: ((org "8.0") (emacs "24.4"))
+;; URL: https://github.com/lujun9972/sendto.el
+
+;; This file is NOT part of GNU Emacs.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Source code
+;;
+;; sendto's code can be found here:
+;;   http://github.com/lujun9972/sendto.el
+
+;;; Commentary:
+
+;; sendto is a little tool that make me convenience to call some functions with region content
+
+;; Quick start:
+
+;; 1. specify ~sendto-function-list~ 
+
+;; The value should be a list of functions which accept a string.
+
+;; 2. turn on sendto-mode: ~M-x sendto-mode~
+
+;; 3. mark a region, and then click mouse-3, It will popup a menu
+
+;; 4. select the function you want 
+
+;;; Code:
 
 (defun sendto--generate-menu-fn (fn)
   (lambda ()
