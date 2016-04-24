@@ -6,7 +6,7 @@
 ;; Created: 2016-4-22
 ;; Version: 0.1
 ;; Keywords: convenience, region
-;; Package-Requires: ((org "8.0") (emacs "24.4"))
+;; Package-Requires: ((emacs "24.4"))
 ;; URL: https://github.com/lujun9972/sendto.el
 
 ;; This file is NOT part of GNU Emacs.
@@ -37,7 +37,7 @@
 
 ;; 1. specify ~sendto-function-list~ 
 
-;; The value should be a list of functions which accept a string.
+;; The value should be a list of functions which accept a string.or a region(point and mark as 2 numeric args, smallest first)
 
 ;; 2. turn on sendto-mode: ~M-x sendto-mode~
 
@@ -53,7 +53,9 @@
     (let* ((start (region-beginning))
            (end (region-end))
            (content (buffer-substring start end)))
-      (funcall fn content))))
+      (condition-case nil
+          (funcall fn content)
+        ((debug wrong-number-of-arguments wrong-type-argument) (funcall fn start end))))))
 
 (defun sendto--generate-menu-item (fn)
   (vector (symbol-name fn) (sendto--generate-menu-fn fn)))
