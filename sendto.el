@@ -35,7 +35,7 @@
 
 ;; Quick start:
 
-;; 1. specify ~sendto-function-list~ 
+;; 1. specify ~sendto-function-list~
 
 ;; The value should be a list of functions which accept a string.or a region(point and mark as 2 numeric args, smallest first)
 
@@ -43,12 +43,14 @@
 
 ;; 3. mark a region, and then click mouse-3, It will popup a menu
 
-;; 4. select the function you want 
+;; 4. select the function you want
 
 ;;; Code:
 
 (defun sendto--generate-menu-fn (fn)
+  "Generate a command used in sendto-menu keymap by FN."
   (lambda ()
+    "Auto generated command by sendto"
     (interactive)
     (let* ((start (region-beginning))
            (end (region-end))
@@ -58,40 +60,42 @@
         ((debug wrong-number-of-arguments wrong-type-argument) (funcall fn start end))))))
 
 (defun sendto--generate-menu-item (fn)
+  "Generate menu item by FN."
   (vector (symbol-name fn) (sendto--generate-menu-fn fn)))
 
 (defun sendto--generate-menu (&rest functions)
+  "Generate menu configuration by FUNCTIONS."
   (cons "sendto" (mapcar #'sendto--generate-menu-item functions)))
 
 (defun sendto-file (content)
-  "Append content to a file"
+  "Append CONTENT to a file."
   (let ((file (read-file-name "append to which file: ")))
     (append-to-file content nil file)))
 
 (defun sendto-buffer (content)
-  "Append content to a buffer"
+  "Append CONTENT to a buffer."
   (with-current-buffer (read-buffer "append to which buffer: ")
     (save-excursion
       (goto-char (point-max))
       (insert content))))
 
 (defun sendto-mail (content)
-  "mail the content"
+  "Mail the CONTENT."
   (mail)
   (goto-char (point-max))
   (insert content))
 
 (defun sendto-appt (content)
-  "Add an appointment for today at sometime with message CONTENT"
+  "Add an appointment for today at sometime with message CONTENT."
   (let ((time (read-string "Time (hh:mm[am/pm]): ")))
     (appt-add time content)
     (appt-activate 1)))
 
 (defgroup sendto nil
-  "send content of region to functions")
+  "Send content of region to functions")
 
 (defcustom sendto-function-list '(sendto-file sendto-buffer sendto-mail sendto-appt)
-  "Functions to be send to"
+  "Functions to be send to."
   :group 'sendto
   :type '(repeat function)
   :set (lambda (item val)
@@ -101,6 +105,7 @@
            (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu val)))))
 
 (defun sendto-popup-functions (&rest functions)
+  "Popup a menu with FUNCTIONS as menu items."
   (unless (and (boundp 'sendto-menu)
               (keymapp sendto-menu))
     (easy-menu-define sendto-menu nil "Menu for sendto" (apply #'sendto--generate-menu functions)))
@@ -108,7 +113,7 @@
 
 ;;;###autoload
 (defun sendto-popup ()
-  "pop up a sendto menu"
+  "Pop up a sendto menu."
   (interactive)
   (apply #'sendto-popup-functions sendto-function-list))
 
