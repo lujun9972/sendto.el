@@ -1,6 +1,6 @@
 ;;; sendto.el --- send the region content to a function -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2004-2015 DarkSun <lujun9972@gmail.com>
+;; Copyright (C) 2004-2016 DarkSun <lujun9972@gmail.com>
 
 ;; Author: DarkSun <lujun9972@gmail.com>
 ;; Created: 2016-4-22
