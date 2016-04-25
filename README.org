@@ -1,6 +1,7 @@
 * sendto
 send the region content to a function
 
+[[file:./out.gif]]
 * Usage
 1. specify ~sendto-function-list~ 
    
