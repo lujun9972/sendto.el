@@ -131,4 +131,4 @@
 
 (provide 'sendto)
 
-;;; sendto ends here
+;;; sendto.el ends here
